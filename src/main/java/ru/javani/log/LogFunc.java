@@ -1,23 +1,28 @@
 package ru.javani.log;
 
-import ru.javani.function.*;
+import static java.lang.String.format;
 
-public class LogFunc implements Function{
+import ru.javani.function.Function;
+
+public class LogFunc implements Function {
     double base;
     LnFunc ln;
 
-    public LogFunc(){
-        base = 2;
-        ln = new LnFunc();
-    }
-
-    public LogFunc(final double base){
+    public LogFunc(final double base) {
         this.base = base;
         ln = new LnFunc();
     }
 
+    public LogFunc(final LnFunc ln, final double base) {
+        this.base = base;
+        this.ln = ln;
+    }
+
     @Override
-    public double calculate(final double x, final double e){
-        return ln.calculate(x, e)/ln.calculate(base, e);
+    public double calculate(final double x, final double e) {
+        if (x <= 0) {
+            throw new ArithmeticException(format("Function value for argument %s doesn't exist", x));
+        }
+        return ln.calculate(x, e) / ln.calculate(base, e);
     }
 }
